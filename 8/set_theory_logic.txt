@@ -1,0 +1,37 @@
+writing each digit as a set containing its illuminated segments:
+
+- digits 1, 4, 7, 8 are found by the  unique length of the set
+1 has length  2
+4 has length 4
+7 has length 3
+8 has length 7
+
+
+- then, taking the set difference of digits 1 & 8, we find this difference is a subset ONLY of the digit 6. This identifies digit 6.
+
+- from the remaining sets, only the digit 0 has a set length of 6, this identifies the digit 0.
+
+- then, taking the set difference of the digits 6 and 4, we find this is a subset of digits 0 and 2. But we already identified 0, so this means we have now identified digit 2.
+
+- Then, taking the set intersection of digits 4 & 2, we find it is a subset of all remaining unidentified digits except for 5. Thus we have found digit 5
+
+- Finally, the union of digits 2 & 5 is only a subset of digit 3. This identifies digit 3 and we now know all the digits.
+
+
+-- version 2, had icon of 9 wrong! --
+
+- digits 1, 4, 7, 8 are found by the  unique length of the set
+1 has length  2
+4 has length 4
+7 has length 3
+8 has length 7
+
+
+- then, taking the set difference of digits 1 & 8, we find this difference is a subset ONLY of the digit 6. This identifies digit 6.
+
+- taking the intersection of digits 6 & 1, this is only NOT a subset of digit 2
+
+- digit 1 is only NOT a subset of digit 5
+
+
+
