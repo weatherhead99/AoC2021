@@ -18,7 +18,7 @@ def n_neighbour_flashes(flashmap: np.ndarray):
     w = np.array([[1,1,1],
                   [1,0,1],
                   [1,1,1]], dtype=np.uint8)
-    n = convolve(flashmap.astype(np.uint8), w, mode="constant", cval=0.0)
+    n = convolve(flashmap.astype(np.uint8), w, mode="constant", cval=0)
     return n
 
 
