@@ -116,18 +116,42 @@ auto decr = [](int& v) { v--;};
 
 int x_n(int u, int n)
 {
-  return n < u ? n*u - n*(n-1)/2 : n*u - u*(u-1)/2;
+  return n < u ? n*u - n*(n-1)/2 : u*u - u*(u-1)/2;
 }
 
 int x_max(int u)
 {
-  return n*u - u*(u-1)/2;
+  return u*u - u*(u-1)/2;
 }
 
-template<typename Func>
-std::vector<int> search_xs(const std::tuple<int,int>& test, Func&& fun)
+std::vector<int> search_xs(const std::tuple<int,int>& test)
 {
-  
+  int u = 0;
+  std::vector<int> out;
+  cout << "x_max: " << x_max(u) << endl;
+  while(x_max(u) < std::get<0>(test))
+    u++;
+
+  cout << "new u: " << u << endl;
+  while(x_n(u,1) <= std::get<1>(test))
+    {
+      //solve for when it hits the minimum
+      auto [t1, t2] = solve_quadratic2(u, std::get<0>(test));
+      auto [t3, t4] = solve_quadratic2(u, std::get<1>(test));
+
+      cout << "u: " << u << endl;
+      cout << "t1: " << t1 << " t3: " << t3 << endl;
+      cout << "lowest: " << x_n(u, std::ceil(t1)) << endl;
+      if(x_n(u, std::ceil(t1)) >= std::get<0>(test))
+	{
+	  cout << "matches!" << endl;
+	  cout << "u: " << u << endl;
+	  out.push_back(u);
+	}
+
+      u += 1;
+    }
+  return out;
 
 }
 
@@ -157,7 +181,19 @@ int main(int argc, char** argv)
   cout << "-----" << endl;
   for(int i=0; i < 10; i++)
     {
-      cout << "i: " << i << " x: " << x_n(7,i) << endl;
+      cout << "i: " << i << " x: " << x_max(i) << endl;
     }
+
+
+  auto testx = example_limits_x;
+  std::vector<int> valid_xs = search_xs(testx);
+  cout << "valid xs: " << endl;
+  for(auto& x : valid_xs)
+    cout << x << ",";
+  cout << endl;
+
+  std::set<int> unique_xs(valid_xs.begin(), valid_xs.end());
+
+  cout << "total combinations: " << unique_ys.size() * unique_xs.size() << endl;
   
 }
