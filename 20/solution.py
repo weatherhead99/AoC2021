@@ -34,7 +34,9 @@ def load_problem(fname: str):
     return rulearr, image
 
 
-def filter_image(image: np.ndarray, rule=None):
+def filter_image(image: np.ndarray, rule=None, fillval = None):
+    if fillval is None:
+        fillval = 0
     def filtfun(v):
         combnums = [_ for _ in v]
         combstr = "".join(str(int(_)) for _ in combnums)
@@ -44,22 +46,22 @@ def filter_image(image: np.ndarray, rule=None):
         if rule is None:
             return idx
         return rule[idx]
-    return generic_filter(image, filtfun, size=(3,3), mode="constant", cval=0)
+    return generic_filter(image, filtfun, size=(3,3), mode="constant", cval=fillval)
+
+def outsideval(i : int, rule) -> int:
+    if i == 0:
+        return 0
+    return rule[0] % (i+1)
 
 
 
 if __name__ == "__main__":
     rule, image = load_problem("input.txt")
-
     image = np.array(image,dtype=np.uint16)
-    print(image.shape)
-    image = np.pad(image, 3)
-    print(image.shape)
-    image2 = filter_image(image, rule)
-    image2 = np.pad(image2, 3)
-
-    image3 = filter_image(image2, rule)
-
+    for i in range(50):
+        padval = outsideval(i, rule)
+        image = np.pad(image, 1, mode="constant", constant_values=padval)
+        image = filter_image(image, rule, padval)
 
 
     print("lit pixels: %d"%  np.count_nonzero(image))
